@@ -43,17 +43,30 @@ public class ExampleConnectionProvider implements MultiTenantConnectionProvider,
 	}
 
 	@Override
-	public Connection getConnection(String schema) throws SQLException {
+	public Connection getConnection(Object tenantIdentifier) throws SQLException {
 		final Connection connection = dataSource.getConnection();
-		connection.setSchema(schema);
+		connection.setSchema(tenantIdentifier.toString());
 		return connection;
 	}
 
 	@Override
-	public void releaseConnection(String s, Connection connection) throws SQLException {
+	public void releaseConnection(Object tenantIdentifier, Connection connection) throws SQLException {
 		connection.setSchema("PUBLIC");
 		connection.close();
 	}
+
+//	//	@Override
+//	public Connection getConnection(String schema) throws SQLException {
+//		final Connection connection = dataSource.getConnection();
+//		connection.setSchema(schema);
+//		return connection;
+//	}
+//
+////	@Override
+//	public void releaseConnection(String s, Connection connection) throws SQLException {
+//		connection.setSchema("PUBLIC");
+//		connection.close();
+//	}
 
 	@Override
 	public boolean supportsAggressiveRelease() {

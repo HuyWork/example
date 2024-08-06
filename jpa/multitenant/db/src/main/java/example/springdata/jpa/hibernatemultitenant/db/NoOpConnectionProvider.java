@@ -43,15 +43,25 @@ public class NoOpConnectionProvider implements MultiTenantConnectionProvider, Hi
 	}
 
 	@Override
-	public Connection getConnection(String schema) throws SQLException {
-
+	public Connection getConnection(Object tenantIdentifier) throws SQLException {
 		return dataSource.getConnection();
 	}
 
 	@Override
-	public void releaseConnection(String s, Connection connection) throws SQLException {
+	public void releaseConnection(Object tenantIdentifier, Connection connection) throws SQLException {
 		connection.close();
 	}
+
+//	@Override
+//	public Connection getConnection(String schema) throws SQLException {
+//
+//		connection.close();
+//	}
+//
+//	@Override
+//	public void releaseConnection(String s, Connection connection) throws SQLException {
+//		connection.close();
+//	}
 
 	@Override
 	public boolean supportsAggressiveRelease() {
