@@ -25,11 +25,18 @@ import org.testcontainers.utility.DockerImageName;
  */
 public class MongoContainers {
 
-	private static final String IMAGE_NAME = "mongo:5.0";
-	private static final String IMAGE_NAME_PROPERTY = "mongo.default.image.name";
+    private static final String IMAGE_NAME = "mongo:5.0";
+    private static final String IMAGE_NAME_PROPERTY = "mongo.default.image.name";
 
-	public static MongoDBContainer getDefaultContainer() {
-		return new MongoDBContainer(DockerImageName.parse(System.getProperty(IMAGE_NAME_PROPERTY, IMAGE_NAME)))
-				.withReuse(true);
-	}
+    private static final String ATLAS_IMAGE_NAME = "mongodb/mongodb-atlas-local:latest";
+    private static final String ATLAS_IMAGE_NAME_PROPERTY = "mongo.atlas.image.name";
+
+    public static MongoDBContainer getDefaultContainer() {
+        return new MongoDBContainer(DockerImageName.parse(System.getProperty(IMAGE_NAME_PROPERTY, IMAGE_NAME)))
+            .withReuse(true);
+    }
+
+    public static AtlasContainer getAtlasContainer() {
+        return new AtlasContainer(System.getProperty(ATLAS_IMAGE_NAME_PROPERTY, ATLAS_IMAGE_NAME)).withReuse(true);
+    }
 }

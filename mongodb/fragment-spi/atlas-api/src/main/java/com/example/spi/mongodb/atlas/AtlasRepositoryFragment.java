@@ -16,7 +16,6 @@
 package com.example.spi.mongodb.atlas;
 
 import java.util.List;
-import java.util.Objects;
 
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,12 +41,11 @@ class AtlasRepositoryFragment<T> implements AtlasRepository<T> {
         RepositoryMethodContext metadata = RepositoryMethodContext.currentMethod();
 
         Class<?> domainType = metadata.getRepository().getDomainType();
-        System.out.println("domainType: " + domainType);
 
-        Document $vectorSearch = createDocument(index, path, vector, limit, null, null, null);
+        Document $vectorSearch = createDocument(index, path, vector, limit, null, null, 150);
         Aggregation aggregation = Aggregation.newAggregation(ctx -> $vectorSearch);
 
-        return (List<T>) mongoOperations.aggregate(aggregation, mongoOperations.getCollectionName(domainType), domainType);
+        return (List<T>) mongoOperations.aggregate(aggregation, mongoOperations.getCollectionName(domainType), domainType).getMappedResults();
     }
 
     private static Document createDocument(String indexName, String path, List<Double> vector, Limit limit, @Nullable Boolean exact, @Nullable CriteriaDefinition filter, @Nullable Integer numCandidates) {
